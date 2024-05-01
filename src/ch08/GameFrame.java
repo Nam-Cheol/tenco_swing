@@ -56,36 +56,33 @@ public class GameFrame extends JFrame {
 			// false : 오른쪽으로 가는 상황
 			boolean direction = true;
 
-			while (stop) {
-				if (direction) {
-					enemy1X -= 10;
-				} else {
-					enemy1X += 10;
-				}
+			while (true) {
+				while (stop) {
 
-				// 방향 바꾸는 개념은 적군 x 좌표값이
-				if (enemy1X <= 50) {
-					direction = false;
-				}
-
-				if (enemy1X >= 900) {
-					direction = true;
-				}
-
-				try {
-					Thread.sleep(100);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				
-				if (player1X <= enemy1X && player1X <= enemy1X + 30) {
-					if (player1Y <= enemy1Y && player1Y <= enemy1Y + 30) {
-
-						charSize1 = 0;
-
+					if (direction) {
+						enemy1X -= 10;
+					} else {
+						enemy1X += 10;
 					}
+
+					// 방향 바꾸는 개념은 적군 x 좌표값이
+					if (enemy1X <= 50) {
+						direction = false;
+					}
+
+					if (enemy1X >= 900) {
+						direction = true;
+					}
+
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+
+					repaint();
 				}
-				
+				enemyStop();
 				repaint();
 			}
 
@@ -155,23 +152,31 @@ public class GameFrame extends JFrame {
 					player1Y += movePlayer1;
 				} else if (code == KeyEvent.VK_SPACE) {
 					// 1. 스페이스를 눌렀을 때 적군을 멈출 수 있도록 코드 수정
-					stop = false;
-				}
-
-				// 2. player 가 적군을 만났다면 player 그림을 없애주세요
-				
-				
-				if (player1X <= enemy1X || player1X <= enemy1X + 30) {
-					if (player1Y <= enemy1Y || player1Y <= enemy1Y + 30) {
-
-						charSize1 = 0;
-
+					if (enemyMove % 2 == 0) {
+						stop = false;
+						enemyMove++;
+					} else {
+						stop = true;
+						enemyMove++;
 					}
 				}
+				enemyStop();
+
+				// 2. player 가 적군을 만났다면 player 그림을 없애주세요
+
 				repaint();
 
 			}
 		});
 	}
 
+	public void enemyStop() {
+		if ((player1X <= enemy1X) && (player1X >= enemy1X - 40) && (player1Y <= enemy1Y)
+				&& (player1Y >= enemy1Y - 40)) {
+
+			charSize1 = 0;
+
+		}
+	}
+	
 }
