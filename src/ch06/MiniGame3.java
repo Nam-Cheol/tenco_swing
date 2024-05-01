@@ -21,8 +21,8 @@ public class MiniGame3 extends JFrame {
 	private final int FRAME_HEIGHT = 1000;
 	private final int PLAYER_WIDTH = 100;
 	private final int PLAYER_HEIGHT = 100;
-	private Icon playerR = new ImageIcon("images/playerR.png");
-	private Icon playerL = new ImageIcon("images/playerL.png");
+	private Icon playerR = new ImageIcon("img/playerR.png");
+	private Icon playerL = new ImageIcon("img/playerL.png");
 	private Icon player;
 
 	public MiniGame3() {
@@ -35,8 +35,8 @@ public class MiniGame3 extends JFrame {
 		setSize(FRAME_WIDTH, 640);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-		Icon icon1 = new ImageIcon("images/backgroundMap.png");
-		Icon obstruction1 = new ImageIcon("images/3.png");
+		Icon icon1 = new ImageIcon("img/backgroundMap.png");
+		Icon obstruction1 = new ImageIcon("img/3.png");
 
 		jBackground = new JLabel(icon1);
 		jBackground.setSize(FRAME_WIDTH, FRAME_HEIGHT);
