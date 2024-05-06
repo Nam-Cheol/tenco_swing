@@ -1,13 +1,18 @@
 package bubble.test.self;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 public class Bubble extends JLabel implements Moveable {
 
 	private Player player;
+	private BufferedImage image;
 
 	private int x;
 	private int y;
@@ -28,6 +33,11 @@ public class Bubble extends JLabel implements Moveable {
 	// 연관관계, 의존성 composition, 생성자 의존 주입(DI)
 	public Bubble(Player player) {
 		this.player = player;
+		try {
+			image = ImageIO.read(new File("img/backgroundMapService.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		initData();
 		setInitLayout();
 		initThread();
@@ -136,8 +146,8 @@ public class Bubble extends JLabel implements Moveable {
 	}
 
 	private void setInitLayout() {
-		x = player.getX() - 30;
-		y = player.getY();
+		this.x = player.getX() - 30;
+		this.y = player.getY();
 
 		setIcon(bubble);
 		setSize(50, 50);
@@ -153,16 +163,8 @@ public class Bubble extends JLabel implements Moveable {
 
 		new Thread(() -> {
 			if (player.playerWay == PlayerWay.LEFT) {
-//				while(redWallCrash) {
-					left();
-					
-//					try {
-//						Thread.sleep(1000);
-//					} catch (InterruptedException e) {
-//						e.printStackTrace();
-//					}
-					up();
-//				}
+				left();
+				up();
 				for (int i = 0; i < 1; i++) {
 					try {
 						Thread.sleep(1000);
@@ -199,49 +201,35 @@ public class Bubble extends JLabel implements Moveable {
 
 	@Override
 	public void left() {
-		//left = true;
+		left = true;
 
-//		while(left) {
-//			if(redWallCrash==false) {
-//			x--;
-//			setLocation(x, y);
-//			try {
-//				Thread.sleep(100);
-//			} catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}
-//			}else {
-//				return;
-//			}
-//		}
-
-		for (int i = 0; i < 400; i++) {
-//			if(redWallCrash == false) {
+		while (left) {
 			x--;
 			setLocation(x, y);
-			if (x <= 50) {
-				return;
+			Color color = new Color(image.getRGB(x + 20, y));
+			if (color.getRed() == 255 && color.getGreen() == 0 && color.getBlue() == 0) {
+				setLeft(false);
 			}
 			try {
 				Thread.sleep(1);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-//			return;
-//			}
 		}
+		return;
 
 	}
 
 	@Override
 	public void right() {
 		right = true;
-		for (int i = 0; i < 400; i++) {
-			if (x >= 900) {
-				return;
-			}
+		while (right) {
 			x++;
 			setLocation(x, y);
+			Color color = new Color(image.getRGB(x+50, y));
+			if (color.getRed() == 255 && color.getGreen() == 0 && color.getBlue() == 0) {
+				setRight(false);
+			}
 			try {
 				Thread.sleep(1);
 			} catch (InterruptedException e) {
@@ -253,12 +241,14 @@ public class Bubble extends JLabel implements Moveable {
 	@Override
 	public void up() {
 		up = true;
+		
 		while (up) {
-			if (y <= 20) {
-				return;
-			}
 			y--;
 			setLocation(x, y);
+			Color color = new Color(image.getRGB(x+30, y));
+			if (color.getRed() == 255 && color.getGreen() == 0 && color.getBlue() == 0) {
+				setUp(false);
+			}
 			try {
 				Thread.sleep(1);
 			} catch (InterruptedException e) {
@@ -267,5 +257,4 @@ public class Bubble extends JLabel implements Moveable {
 		}
 	}
 
-	
 }

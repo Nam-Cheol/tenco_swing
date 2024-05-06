@@ -3,11 +3,8 @@ package bubble.test.self;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-import lombok.Getter;
 
 public class Player extends JLabel implements Moveable {
-
-	private BubbleFrame frame;
 
 	private int x;
 	private int y;

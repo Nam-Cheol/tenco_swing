@@ -13,6 +13,9 @@ public class BubbleFrame extends JFrame {
 	private JLabel backgroundMap;
 	private Player player; // <-- composition 관계
 	private Bubble bubble;
+	private Enemy enemy1;
+	private Enemy enemy2;
+	private Enemy enemy3;
 
 	public BubbleFrame() {
 		initData();
@@ -22,8 +25,6 @@ public class BubbleFrame extends JFrame {
 		// Player 백그라운드 서비스 시작
 		new Thread(new BackgroundPlayerService(player)).start();
 		
-		// Bubble 백그라운드 서비스 시작
-//		new Thread(new BackgroundBubbleService(player, player.attack())).start();
 
 	}
 
@@ -35,7 +36,7 @@ public class BubbleFrame extends JFrame {
 		setContentPane(backgroundMap);
 
 		player = new Player();
-
+		
 	}
 
 	private void setInitLayout() {
@@ -79,7 +80,6 @@ public class BubbleFrame extends JFrame {
 					break;
 				case KeyEvent.VK_SPACE:
 					System.out.println("버블 생성");
-					new Thread(new BackgroundBubbleService(player, player.attack())).start();
 					backgroundMap.add(player.attack());
 					break;
 				default:
@@ -115,6 +115,7 @@ public class BubbleFrame extends JFrame {
 	// 코드 테스트
 	public static void main(String[] args) {
 		new BubbleFrame();
+		
 	}// end of main
 
 }
