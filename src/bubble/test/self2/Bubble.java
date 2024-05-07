@@ -1,4 +1,4 @@
-package bubble.test.self;
+package bubble.test.self2;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -226,17 +226,25 @@ public class Bubble extends JLabel implements Moveable {
 		while (up) {
 			y--;
 			setLocation(x, y);
-			Color color = new Color(image.getRGB(x + 25, y));
+			Color color = new Color(image.getRGB(x + 20, y));
 			if (color.getRed() == 255 && color.getGreen() == 0 && color.getBlue() == 0) {
 				setUp(false);
 			}
 			if (player.playerWay == PlayerWay.LEFT && color.getRed() == 0 && color.getGreen() == 0
 					&& color.getBlue() == 255) {
+				if(color.getRed() == 255 && color.getGreen() == 255 && color.getBlue() == 255) {
+					System.out.println("11");
+					setUp(true);
+				}
 				right();
 			} else if (player.playerWay == PlayerWay.RIGHT && color.getRed() == 0 && color.getGreen() == 0
 					&& color.getBlue() == 255) {
+				if(color.getRed() == 255 && color.getGreen() == 255 && color.getBlue() == 255) {
+					System.out.println("11");
+					setUp(true);
+				}
 				left();
-			}
+			} 
 			try {
 				Thread.sleep(1);
 			} catch (InterruptedException e) {

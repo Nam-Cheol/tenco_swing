@@ -1,4 +1,4 @@
-package bubble.test.self;
+package bubble.test.self2;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;

@@ -1,18 +1,12 @@
-package bubble.test.self;
+package bubble.test.ex08;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 public class Bubble extends JLabel implements Moveable {
 
 	private Player player;
-	private BufferedImage image;
+	private BackgroundBubbleService backgroundBubbleService;
 
 	private int x;
 	private int y;
@@ -21,30 +15,25 @@ public class Bubble extends JLabel implements Moveable {
 	private boolean left;
 	private boolean right;
 	private boolean up;
-	private boolean redWallCrash;
 
 	// 적군을 맞춘 상태
-	private int state; // 0.(기본 물방울) 1. (적을 가둔 상태의 물방울)
+	private int state; // 0.(기본 물방울), 1.(적을 가둔 상태 물방울)
 
 	private ImageIcon bubble; // 기본 물방울
 	private ImageIcon bubbled; // 적을 가둔 물방울
-	private ImageIcon bomb; // 터진 물방울
+	private ImageIcon bomb; // 물방울 팡!
 
-	// 연관관계, 의존성 composition, 생성자 의존 주입(DI)
+	// 연관관계, 의존성 컴포지션 관계, 생성자 의존 (DI)
 	public Bubble(Player player) {
 		this.player = player;
-		try {
-			image = ImageIO.read(new File("img/backgroundMapService.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		initData();
 		setInitLayout();
-		initThread();
+		
+		// 객체 생성시 무조건 스레드 시작 
+		initThread(); 
 	}
-
-	// get, set
-
+	
+	//get,set 
 	public Player getPlayer() {
 		return player;
 	}
@@ -125,91 +114,76 @@ public class Bubble extends JLabel implements Moveable {
 		this.bomb = bomb;
 	}
 
-	public boolean isRedWallCrash() {
-		return redWallCrash;
-	}
-
-	public void setRedWallCrash(boolean redWallCrash) {
-		this.redWallCrash = redWallCrash;
-	}
-
 	private void initData() {
+
 		bubble = new ImageIcon("img/bubble.png");
 		bubbled = new ImageIcon("img/bubbled.png");
 		bomb = new ImageIcon("img/bomb.png");
+		backgroundBubbleService = new BackgroundBubbleService(this);
 
 		left = false;
 		right = false;
 		up = false;
-		redWallCrash = false;
 		state = 0;
+
 	}
 
 	private void setInitLayout() {
-		this.x = player.getX() - 30;
-		this.y = player.getY();
+
+		x = player.getX();
+		y = player.getY();
 
 		setIcon(bubble);
 		setSize(50, 50);
 		setLocation(x, y);
-		setVisible(true);
 	}
-
-	// 공통으로 사용하는 부분을 메서드로 만들어보자.
-	// 내부에서만 사용할 예정.
-
+	
+	// 공통으로 사용하는 부분을 메서드로 만들어 보자. 
+	// 이 메서드는 내부에서만 사용할 예정
 	private void initThread() {
-		// 버블은 스레드가 하나면 된다.
-
-		new Thread(() -> {
-			if (player.playerWay == PlayerWay.LEFT) {
-				left();
-				up();
-				bubbleBomb();
-			} else {
-				right();
-				up();
-				bubbleBomb();
+		// 버블을 스레드가 하나면 된다.
+		// 익명 클래스, 
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				
+				if(player.playerWay == PlayerWay.LEFT) {
+					left();
+				} else {
+					right();
+				}
 			}
 		}).start();
-
+		
 	}
-
+	
 	@Override
 	public void left() {
-		left = true;
-
-		while (left) {
+		left = true; 
+		for(int i = 0; i < 400; i++) {
 			x--;
 			setLocation(x, y);
-			Color color = new Color(image.getRGB(x + 10, y + 25));
-			if (color.getRed() == 255 && color.getGreen() == 0 && color.getBlue() == 0) {
-				setLeft(false);
+			if(backgroundBubbleService.leftWall()) {
+				break;
 			}
-
 			try {
 				Thread.sleep(1);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
-		return;
-
+		up();
 	}
 
 	@Override
 	public void right() {
-		right = true;
-		while (right) {
+		right = true; 
+		for(int i = 0; i < 400; i++) {
 			x++;
 			setLocation(x, y);
-			Color color = new Color(image.getRGB(x + 50, y + 25));
-			if (color.getRed() == 255 && color.getGreen() == 0 && color.getBlue() == 0) {
-				setRight(false);
-			}
-			if (color.getRed() == 0 && color.getGreen() == 0 && color.getBlue() == 0) {
-				System.out.println("흰색!");
-				return;
+			if(backgroundBubbleService.rightWall()) {
+				break;
 			}
 			try {
 				Thread.sleep(1);
@@ -217,25 +191,18 @@ public class Bubble extends JLabel implements Moveable {
 				e.printStackTrace();
 			}
 		}
+		up();
+		
 	}
 
 	@Override
 	public void up() {
 		up = true;
-
-		while (up) {
+		while(true) {
 			y--;
 			setLocation(x, y);
-			Color color = new Color(image.getRGB(x + 25, y));
-			if (color.getRed() == 255 && color.getGreen() == 0 && color.getBlue() == 0) {
-				setUp(false);
-			}
-			if (player.playerWay == PlayerWay.LEFT && color.getRed() == 0 && color.getGreen() == 0
-					&& color.getBlue() == 255) {
-				right();
-			} else if (player.playerWay == PlayerWay.RIGHT && color.getRed() == 0 && color.getGreen() == 0
-					&& color.getBlue() == 255) {
-				left();
+			if(backgroundBubbleService.topWall()) {
+				break;
 			}
 			try {
 				Thread.sleep(1);
@@ -244,20 +211,6 @@ public class Bubble extends JLabel implements Moveable {
 			}
 		}
 	}
+	
 
-	public void bubbleBomb() {
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			setIcon(bomb);
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			setIcon(null);
-
-	}
 }
