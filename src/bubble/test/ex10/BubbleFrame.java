@@ -1,17 +1,11 @@
-package bubble;
+package bubble.test.ex10;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-
-import bubble.components.Enemy;
-import bubble.components.Player;
-import bubble.service.BackgroundPlayerService;
 
 public class BubbleFrame extends JFrame {
 
@@ -22,8 +16,6 @@ public class BubbleFrame extends JFrame {
 	// 포함관계 - 콤포지션
 	private Player player;
 	private Enemy enemy1;
-	private Enemy enemy2;
-	private Enemy enemy3;
 
 
 	public BubbleFrame() {
@@ -48,10 +40,6 @@ public class BubbleFrame extends JFrame {
 		// mContext --> 참조 타입() --> 32bit 기준 주소값의 크기는 기본 4byte 이다. (우리는 64bit)
 		player = new Player(mContext);
 		enemy1 = new Enemy(mContext);
-		enemy2 = new Enemy(mContext);
-		enemy2.setY(300);
-		enemy3 = new Enemy(mContext);
-		enemy3.setY(420);
 	}
 
 	private void setInitLayout() {
@@ -63,8 +51,6 @@ public class BubbleFrame extends JFrame {
 
 		add(player);
 		add(enemy1);
-		add(enemy2);
-		add(enemy3);
 	}
 
 	private void addEventListener() {
@@ -124,37 +110,6 @@ public class BubbleFrame extends JFrame {
 			} // end of KeyReleased
 
 		});
-		
-		this.addMouseListener(new MouseListener() {
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-			}
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				System.out.println(e.getY());
-			}
-		});
 	}
 
 	// getter
@@ -162,13 +117,7 @@ public class BubbleFrame extends JFrame {
 		return this.player;
 	}
 	
-	public Enemy getEnemy1() {
-		return enemy1;
-	}
-	public Enemy getEnemy2() {
-		return enemy1;
-	}
-	public Enemy getEnemy3() {
+	public Enemy getEnemy() {
 		return enemy1;
 	}
 	// 코드 테스트

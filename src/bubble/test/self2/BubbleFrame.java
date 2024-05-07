@@ -31,7 +31,7 @@ public class BubbleFrame extends JFrame {
 	private void initData() {
 		setTitle("Bubble! Bubble!");
 		setSize(1000, 640);
-		backgroundMap = new JLabel(new ImageIcon("img/backgroundMap.png"));
+		backgroundMap = new JLabel(new ImageIcon("img/backgroundMapService.png"));
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setContentPane(backgroundMap);
 
