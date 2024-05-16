@@ -38,12 +38,12 @@ public class BubbleFrame extends JFrame {
 
 	private void initData() {
 		// TODO 이미지 변경
-		backgroundMap = new JLabel(new ImageIcon("img/backgroundMap.png"));
+		backgroundMap = new JLabel(new ImageIcon("img/backgroundMap11.png"));
 		// backgroundMap = new JLabel(new ImageIcon("img/test.png"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		// Frame --> root Panel
 		setContentPane(backgroundMap); // add 처리
-		setSize(1000, 640);
+		setSize(1280, 980);
 
 		// mContext --> 참조 타입() --> 32bit 기준 주소값의 크기는 기본 4byte 이다. (우리는 64bit)
 		player = new Player(mContext);

@@ -171,8 +171,6 @@ public class Player extends JLabel implements Moveable {
 		left = true;
 		setIcon(playerL);
 
-		// <- <- 반복
-
 		new Thread(new Runnable() {
 
 			@Override
@@ -181,7 +179,6 @@ public class Player extends JLabel implements Moveable {
 					try {
 						Thread.sleep(10);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					x -= SPEED;
